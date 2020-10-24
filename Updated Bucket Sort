@@ -1,0 +1,31 @@
+function bucketsort(arr, range_min, range_max) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  if (arr.length < 20) {
+    return arr.sort();
+  }
+
+  let result = [];
+  let numberOfBuckets = Math.ceil(Math.sqrt(arr.length));
+
+  for (let i = 0; i < numberOfBuckets; i++) {
+    result.push([]);
+  }
+
+  let bucketRange = (range_max - range_min) / numberOfBuckets;
+
+  for (let i = 0; i < arr.length; i++) {
+
+    let bucketIndex = Math.floor((arr[i] - range_min) / bucketRange);
+
+    result[bucketIndex].push(arr[i]);
+  }
+
+  let finalResult = []
+  for (let i = 0; i < result.length; i++) {
+    finalResult = finalResult.concat(bucketsort(result[i], i * bucketRange + range_min, (i+1) * bucketRange + range_min));
+  }
+
+  return finalResult;
+}
